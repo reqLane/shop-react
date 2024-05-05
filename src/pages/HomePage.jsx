@@ -1,16 +1,16 @@
 import React from 'react';
 import Carousel from "../components/Carousel/Carousel.jsx";
-import Categories from "../components/Categories/Categories.jsx";
-import Products from "../components/Products/Products.jsx";
-
+import PopularCategories from "../components/PopularCategories/PopularCategories.jsx";
+import PopularProducts from "../components/PopularProducts/PopularProducts.jsx";
+import '../index.css'
 const HomePage = () => {
 
     return (
-        <>
+        <div className='home-page-container'>
             <Carousel/>
-            <Products/>
-            <Categories/>
-        </>
+            <PopularProducts/>
+            <PopularCategories/>
+        </div>
     );
 };
 

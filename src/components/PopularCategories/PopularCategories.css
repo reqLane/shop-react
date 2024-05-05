@@ -1,0 +1,53 @@
+.popular-categories-container{
+    margin-top: 60px;
+}
+.popular-categories-title{
+    color: #000000;
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.categories-items{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+.categories-items li {
+    width: 49%;
+    height: 350px;
+    background-image: url("../../assets/popular-categories/category-1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+.category-info{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 160px 0 60px 30px;
+}
+.category-title{
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 33px;
+    margin-bottom: 10px;
+}
+.category-description{
+    color: #FFFFFF;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+    margin-bottom: 30px;
+}
+.category-btn{
+    color: #03132c;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-color: transparent;
+    border-radius: 5px;
+    width: 134px;
+    cursor: pointer;
+}

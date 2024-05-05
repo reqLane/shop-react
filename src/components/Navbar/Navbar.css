@@ -6,12 +6,15 @@
 .nav-top-menu{
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     margin: 10px 80px;
 }
-
+.nav-left-container{
+    display: flex;
+    align-items: center;
+}
 .nav-tel-container{
-
+    margin-left: 50px;
 }
 .nav-tel-container > a{
     color: #000000;
@@ -20,7 +23,7 @@
 }
 
 .nav-search-bar{
-    width: 500px;
+    width: 800px;
     padding: 7px 0 7px 5px;
 }
 
@@ -45,29 +48,29 @@
 .user-icon-link{
     display: flex;
     align-items: center;
-    color: #57646e;
+    color: #03132c;
+    margin-right: 35px;
 }
 .cart-icon-link{
     display: flex;
     align-items: center;
-    color: #57646e;
+    color: #03132c;
 }
 
 .user-icon{
     font-size: 28px;
     margin-left: 5px;
     margin-right: 10px;
-    color:#57646e;
+    color: #03132c;
 }
 
 .shopping-cart-icon{
     font-size: 28px;
-    margin-left: 20px;
-    color: #57646e;
+    color: #03132c;
 }
 
 .nav-links-container{
-    background-color: #57646e;
+    background-color: #03132c;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -84,3 +87,4 @@
     color: #FFFFFF;
     padding: 15px 50px;
 }
+

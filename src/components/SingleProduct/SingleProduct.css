@@ -1,0 +1,35 @@
+.single-product-container{
+    width: 300px;
+    margin: 30px 30px 0 0;
+}
+.img-container{
+    display: flex;
+    justify-content: center;
+    background-color: rgba(245, 245, 245, 1);
+}
+
+.single-product-description{
+    font-size: 14px;
+    color: #000000;
+    margin: 15px 0 5px;
+}
+
+.price-container{
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.price-container > .price{
+    font-weight: 800;
+    font-size: 30px;
+    color: #03132c;
+}
+.price-container > .currency{
+    position: absolute;
+    color: #03132c;
+    left: 35%;
+    bottom: 11%;
+    font-weight: 700;
+    font-size: 18px;
+}
