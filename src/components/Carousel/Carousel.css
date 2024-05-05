@@ -1,0 +1,66 @@
+.carousel-container {
+    position: relative;
+    width: 76.5%;
+    margin: 35px auto;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-left: 2px solid #FFF;
+    border-bottom: 2px solid #FFF;
+}
+
+.swiper-button-next {
+    right: 10px;
+    transform: rotate(224deg);
+}
+
+.swiper-button-prev {
+    left: 10px;
+    transform: rotate(44deg);
+}
+
+.swiper-slide > img{
+    display: flex;
+    width: 100%;
+}
+
+.slide-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.slide-button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+    background-color: grey;
+    cursor: pointer;
+}
+
+.slide-button.active {
+    background-color: green;
+}
