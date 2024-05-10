@@ -1,0 +1,136 @@
+.order-page-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 80px;
+}
+
+.contact-details {
+    width: 45%;
+}
+
+.contact-details h2 {
+    margin-bottom: 10px;
+}
+
+.order-summary {
+    width: 45%;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.in-cart-title {
+    margin-bottom: 10px;
+    color: #FFFFFF;
+    background-color: #03132c;
+    padding: 15px 0 15px 40px;
+}
+
+.order-summary ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-summary ul li {
+    margin: 20px;
+    border: 1px solid #03132c;
+    padding: 10px;
+    width: 95%;
+}
+
+.place-order-btn {
+    display: flex;
+    justify-content: center;
+    padding: 20px 80px;
+    background-color: #03132c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 500px;
+    margin: 20px auto;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.place-order-btn:hover {
+    background-color: #57646e;
+    color: #03132c;
+
+}
+
+.contact-details{
+    display: flex;
+    flex-direction: column;
+}
+.order-subtitle{
+    font-weight: 400;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.contact-details-title{
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.single-contact{
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+    margin: 25px 0;
+}
+
+.single-contact label{
+    font-weight: 600;
+    padding-bottom: 5px;
+    font-size: 14px;
+}
+
+.single-contact input[type='text']{
+    padding: 10px 10px;
+}
+
+.delivery-container{
+    display: flex;
+}
+.delivery-container li{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+.delivery-container li p{
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.delivery-container li div label{
+    display: inline-block;
+    padding-bottom: 20px;
+    margin-left: 10px;
+}
+
+.address-container{
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    width: 600px;
+}
+.address-container input{
+    padding: 10px 10px;
+}
+.address-container label{
+    margin-bottom: 10px;
+}
+
+.order-sum{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    font-size: 19px;
+    font-weight: 700;
+}

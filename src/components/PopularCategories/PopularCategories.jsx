@@ -7,28 +7,28 @@ const PopularCategories = () => {
             <ul className='categories-items'>
                 <li>
                     <div className="category-info">
-                        <p className='category-title'>Столи</p>
+                        <p className='popular-category-text'>Столи</p>
                         <span className='category-description'>Вирізняються міцною та надійною конструкцією. Матеріал – дуб.</span>
                         <button className='category-btn'>Детальніше</button>
                     </div>
                 </li>
                 <li>
                     <div className="category-info">
-                        <p className='category-title'>Столи</p>
+                        <p className='popular-category-text'>Столи</p>
                         <span className='category-description'>Вирізняються міцною та надійною конструкцією. Матеріал – дуб.</span>
                         <button className='category-btn'>Детальніше</button>
                     </div>
                 </li>
                 <li>
                     <div className="category-info">
-                        <p className='category-title'>Столи</p>
+                        <p className='popular-category-text'>Столи</p>
                         <span className='category-description'>Вирізняються міцною та надійною конструкцією. Матеріал – дуб.</span>
                         <button className='category-btn'>Детальніше</button>
                     </div>
                 </li>
                 <li>
                     <div className="category-info">
-                        <p className='category-title'>Столи</p>
+                        <p className='popular-category-text'>Столи</p>
                         <span className='category-description'>Вирізняються міцною та надійною конструкцією. Матеріал – дуб.</span>
                         <button className='category-btn'>Детальніше</button>
                     </div>

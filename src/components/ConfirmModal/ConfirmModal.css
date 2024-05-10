@@ -1,0 +1,39 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 60px;
+    border-radius: 5px;
+    text-align: center;
+    width:600px;
+    height: 380px;
+}
+
+.modal-confirm-title{
+    color: #03132c;
+    font-weight: 700;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.continue-btn{
+    margin-top: 50px;
+    border: none;
+    border-radius: 5px;
+    padding: 20px 80px;
+    background-color: #03132c;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+}

@@ -1,10 +1,11 @@
 import React from 'react';
-
+import SelectedProduct from "../components/SelectedProduct/SelectedProduct.jsx";
 const ProductPage = () => {
+
     return (
-        <div>
-            This is product  page
-        </div>
+        <>
+            <SelectedProduct/>
+        </>
     );
 };
 

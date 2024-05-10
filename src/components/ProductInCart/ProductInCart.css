@@ -1,0 +1,45 @@
+.product-in-cart-container {
+    display: flex;
+    align-items: center;
+}
+
+.product-image {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+
+.product-info {
+    font-size: 14px;
+    color: #777;
+}
+
+.product-price {
+    font-weight: bold;
+    color: #03132c;
+    font-size: 20px;
+}
+
+.product-color,
+.product-material {
+    margin-top: 5px;
+}
+
+
+.top-order-detail{
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+}
+

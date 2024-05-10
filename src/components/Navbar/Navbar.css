@@ -78,6 +78,9 @@
 
 .nav-items{
     display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 .nav-link{
@@ -85,6 +88,42 @@
     font-weight: 600;
     display: inline-block;
     color: #FFFFFF;
-    padding: 15px 50px;
+    padding: 15px 20px;
+    position: relative;
+    cursor: pointer;
+}
+.nav-link:hover{
+    background-color: #ffffff;
+    color: #03132c;
 }
 
+.nav-links-container {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 48px;
+    background-color: #ffffff;
+    z-index: 100;
+    width: 200px;
+}
+.open{
+    display: block;
+}
+
+.dropdown-link {
+    color: #03132c;
+    padding: 10px 20px;
+    display: block;
+    text-decoration: none;
+}
+
+.dropdown-link:hover {
+    background-color: #e0e1e2;
+}
+
+.nav-link:hover .dropdown-menu {
+    display: block;
+}
