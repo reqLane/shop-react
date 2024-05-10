@@ -8,10 +8,12 @@ import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { MenuItems } from '../../MenuItems/MenuItems.js';
 import DropdownMenu from '../DropdownMenu/DropdownMenu.jsx';
+import AuthModal from "../AuthModal/AuthModal.jsx";
 
 const Navbar = () => {
     const [activeMenu, setActiveMenu] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     const handleMouseEnter = (index) => {
         setActiveMenu(index);
@@ -25,6 +27,10 @@ const Navbar = () => {
     const handleMouseLeave = () => {
         setActiveMenu(null);
         setActiveSubMenu(null);
+    };
+
+    const handleUserIconClick = () => {
+        setShowModal(true); // Open the modal when user icon is clicked
     };
 
     return (
@@ -45,9 +51,9 @@ const Navbar = () => {
                     </div>
 
                     <div className='nav-auth-container'>
-                        <a href='#' className='user-icon-link'>
+                        <button className='user-icon-link' onClick={handleUserIconClick}>
                             <FaUser className='user-icon' /> Увійти
-                        </a>
+                        </button>
                         <Link to='/cart' className='cart-icon-link'>
                             <AiOutlineShoppingCart className='shopping-cart-icon' />
                         </Link>
@@ -70,6 +76,7 @@ const Navbar = () => {
                     </ul>
                 </div>
             </nav>
+            {showModal && <AuthModal onClose={()=> setShowModal(false)}/>}
         </>
     );
 };

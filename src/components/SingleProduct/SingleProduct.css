@@ -14,21 +14,21 @@
     margin: 15px 0 5px;
 }
 
-.price-container{
+.single-product-price-container{
     display: flex;
     align-items: center;
     position: relative;
     margin-bottom: 10px;
 }
-.price-container > .price{
+.single-product-price-container > .price{
     font-weight: 800;
     font-size: 30px;
     color: #03132c;
 }
-.price-container > .currency{
+.single-product-price-container > .currency{
     position: absolute;
     color: #03132c;
-    left: 35%;
+    left: 5rem;
     bottom: 11%;
     font-weight: 700;
     font-size: 18px;

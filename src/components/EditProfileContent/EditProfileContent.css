@@ -1,0 +1,74 @@
+.selected-profile-wrapper {
+    width: 900px;
+}
+
+.selected-profile-title{
+    margin-bottom: 20px;
+    font-size: 25px;
+    color: #03132c;
+}
+
+.selected-profile-form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.single-form-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.single-form-container label {
+    padding-bottom: 5px;
+}
+
+.single-form-container input, .dob-dropdown select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.date-of-birth-container {
+    display: flex;
+}
+
+.dob-dropdown {
+    margin-right: 10px;
+}
+
+.auth-submit-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.auth-submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.date-of-birth-container{
+    margin-top: 5px;
+}
+
+.selected-profile-submit-btn{
+    margin-top: 10px;
+    border: none;
+    background-color: #03132c;
+    border-radius: 5px;
+    padding: 20px 10px;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease-in;
+    width: 300px;
+}
+.selected-profile-submit-btn:hover{
+    background-color: #57646e;
+    color: #03132c;
+}

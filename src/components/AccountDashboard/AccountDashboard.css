@@ -1,0 +1,39 @@
+.account-container {
+    margin: 0 80px;
+}
+
+.account-path {
+    margin: 30px 0 0 0;
+}
+
+.account-title {
+    color: #03132c;
+    font-size: 30px;
+    font-weight: 700;
+    margin: 30px 0;
+}
+
+.account-content {
+    display: flex;
+}
+
+.account-left-section {
+    width: 40%;
+    height: 100%;
+    margin-right: 30px;
+}
+
+.account-left-section li {
+    cursor: pointer;
+    background-color: #f5f5f5;
+    padding: 30px;
+    color: #03132c;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.account-left-section li:hover,
+.account-left-section li.active {
+    background-color: #d3d7da;
+    font-weight: 700;
+}

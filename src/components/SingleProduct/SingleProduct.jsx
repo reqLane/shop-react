@@ -9,7 +9,7 @@ const SingleProduct = ({showToCart}) => {
                 <img src={img1} alt=""/>
             </div>
             <p className='single-product-description'>Стілець з масиву дуба САБРІНА</p>
-            <div className="price-container">
+            <div className="single-product-price-container">
                 <p className='price'>2 600</p>
                 <p className='currency'>грн</p>
             </div>

@@ -1,0 +1,108 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.auth-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    height: 600px;
+    width: 400px;
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 10px 40px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #03132c;
+    transition: 0.3s ease-in;
+}
+.tab-btn:hover{
+    background-color: rgba(87,100,110,0.4);
+    color: #FFFFFF;
+}
+
+.tab-btn.active {
+    background-color: #57646e;
+    color: #FFFFFF;
+}
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 29px;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal-body div p {
+    margin-bottom: 20px;
+    padding: 10px 0;
+    font-weight: 600;
+    color: #03132c;
+}
+
+.modal-body div input {
+    display: block;
+    margin: 8px auto;
+    padding: 8px 120px 8px 8px;
+}
+.modal-body div input::placeholder {
+    color: #03132c;
+    opacity: .8;
+}
+.modal-body div label{
+    color: #03132c;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-body div .auth-submit-btn {
+    display: inline-block;
+    text-align: center;
+    width: 300px;
+    padding: 8px 20px;
+    background-color: #03132c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 30px;
+}
+
+.modal-body .auth-submit-btn:hover {
+    background-color: #57646e;
+    color: #03132c;
+}
+

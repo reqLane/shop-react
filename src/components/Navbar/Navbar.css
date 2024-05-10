@@ -50,6 +50,9 @@
     align-items: center;
     color: #03132c;
     margin-right: 35px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 .cart-icon-link{
     display: flex;
