@@ -1,28 +1,142 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Slider from 'react-slider'
 import './SelectedCategory.css';
 import SingleProduct from "../SingleProduct/SingleProduct.jsx";
-const MIN = 100;
-const MAX = 12000;
-import {MenuItems} from "../../MenuItems/MenuItems.js";
+const SelectedCategory = ({location}) => {
+    const [edgePrices, setEdgePrices] = useState([0,0]);
+    const [sliderValues,setSliderValues] = useState([0,0]);
+    const [selectedSliderValues,setSelectedSliderValues] = useState([0,0]);
+    const [materials, setMaterials] = useState([]);
+    const [colors, setColors] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [selectOption,setSelectOption] = useState('asc');
 
-const SelectedCategory = ({category,title}) => {
-    const [values,setValues] = useState([MIN,MAX]);
+    const category = location.state.category;
+    const subcategory = location.state.subcategory;
+    const search = location.state.search;
+
+
+    useEffect(()=>{
+        getEdgePrices().then((data) => {
+            const priceLow = data.priceLow;
+            const priceHigh = data.priceHigh;
+
+            setEdgePrices([priceLow, priceHigh]);
+            setSliderValues([priceLow,priceHigh]);
+            setSelectedSliderValues([priceLow,priceHigh]);
+
+            getFilteredProducts(priceLow,priceHigh);
+        });
+        getMaterials();
+        getColors();
+    },[location]);
+
+    useEffect(()=>{
+        getFilteredProducts(selectedSliderValues[0], selectedSliderValues[1]);
+    },[selectOption,selectedSliderValues]);
+
+
+    const getEdgePrices = async () => {
+        const body = {
+            categoryId: category ? category.categoryId : "-1",
+            subcategoryId: subcategory ? subcategory.subcategoryId : "-1",
+        };
+
+        const response= await fetch('http://localhost:8080/api/products/edge-prices', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+        const data = await response.json();
+        return data;
+    }
+
+    const getMaterials = async () =>{
+        const response = await fetch('http://localhost:8080/api/materials');
+        const data = await response.json();
+        setMaterials(data);
+    }
+
+    const getColors = async () =>{
+        const response = await fetch('http://localhost:8080/api/colors');
+        const data = await response.json();
+        setColors(data);
+    }
+
+    const getMaterialsChecked = () => {
+        const checkedMaterials = materials.filter(material => {
+            const checkbox = document.getElementById(material.materialId.toString());
+            return checkbox.checked;
+        });
+        const materialIds = checkedMaterials.map(material => material.materialId);
+        return materialIds;
+    };
+
+    const getColorsChecked = () => {
+        const checkedColors = colors.filter(color => {
+            const checkbox = document.getElementById(color.colorId.toString());
+            return checkbox.checked;
+        });
+        const colorIds = checkedColors.map(color => color.colorId);
+        return colorIds;
+    };
+
+    const getFilteredProducts = async (priceLow, priceHigh) => {
+        const url = new URL('http://localhost:8080/api/products/filtered');
+        url.searchParams.append('price-sort',selectOption);
+        url.searchParams.append('size', '100');
+
+        const body = {
+            categoryId: category ? category.categoryId : "-1",
+            subcategoryId: subcategory ? subcategory.subcategoryId : "-1",
+            search: search ? search : null,
+            priceMin: priceLow,
+            priceMax: priceHigh,
+            materialIds: getMaterialsChecked(),
+            colorIds: getColorsChecked()
+        };
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        });
+        const data = await response.json();
+        setFilteredProducts(data);
+    }
+
+    const togglePriceSort = () =>{
+        const select = document.getElementById("price-sort").value;
+        setSelectOption(select === 'Highest Price' ? 'desc' : 'asc');
+    }
 
     return (
         <div className='selected-category-container'>
             <div className="category-path">
-                {title ? <span>Головна  {category}  {title}</span> : <span>Головна {category}</span>}
+                {subcategory ?
+                    <h1>Home <span>{category.name} {subcategory.name}</span></h1>
+                    :
+                    (category ? <h1>Home <span>{category.name}</span></h1> : <h1>Home <span>${search}</span></h1>)
+
+                }
             </div>
 
             <div className="category-top-menu">
-                {title ?<h2 className='category-title'>{title}</h2>  : <h2 className='category-title'>{category}</h2>}
+                {subcategory ?
+                    <h2 className='category-title'>{subcategory.name}</h2>
+                    :
+                    (category && <h2 className='category-title'>{category.name}</h2>)
+                }
 
                 <div className="category-overall-filter">
-                    <span>Сортувати по: </span>
-                    <select name="" id="" className='category-select'>
-                        <option value="">Збільшенню ціни</option>
-                        <option value="">Зменшенню ціни</option>
+                    <span>Sort By: </span>
+                    <select name="" id="price-sort" className='category-select' onChange={togglePriceSort}>
+                        <option value="Lowest Price">Lowest Price</option>
+                        <option value="Highest Price">Highest Price</option>
                     </select>
                 </div>
             </div>
@@ -31,73 +145,43 @@ const SelectedCategory = ({category,title}) => {
                     <div className="category-filter-container">
                         <div className="category-price-container">
                             <div className="category-price-top">
-                                <p className='price'>Ціна</p>
-                                <p className='currency'>грн</p>
+                                <p className='price'>Price</p>
                             </div>
-                            <Slider className='slider' onChange={setValues} value={values} min={MIN} max={MAX}/>
+                            <Slider className='slider' onChange={setSliderValues} value={sliderValues} min={edgePrices[0]} max={edgePrices[1]}/>
                             <div className="values">
-                                <div className="value-from"> {values[0]}</div>
-                                <div className="value-to">{values[1]}</div>
+                                <div className="value-from"> {sliderValues[0]}</div>
+                                <div className="value-to">{sliderValues[1]}</div>
                                 <div className='confirm-btn'>OK</div>
                             </div>
                         </div>
                         <ul className='category-filter-list'>
                             <li>
-                                <h2>Матеріал</h2>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='material-1'/>
-                                    <label htmlFor="material-1">Із суцільного дерева</label>
-                                </div>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='material-2'/>
-                                    <label htmlFor="material-2">Комбіновані (дерево + метал)</label>
-                                </div>
+                                <h2>Material</h2>
+                                {materials.map(material=>
+                                    <div className="checkbox-container" key={`${material.materialId}`}>
+                                        <input type="checkbox" id={`${material.materialId}`}/>
+                                        <label htmlFor={`${material.materialId}`}>{material.name}</label>
+                                    </div>
+                                )}
                             </li>
                             <li>
-                                <h2>Сидіння</h2>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='seat-1'/>
-                                    <label htmlFor="seat-1">З твердим сидінням</label>
-                                </div>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='seat-2'/>
-                                    <label htmlFor="seat-2">З м’яким сидінням</label>
-                                </div>
+                                <h2>Color</h2>
+                                {colors.map(color=>
+                                    <div className="checkbox-container" key={`${color.colorId}`}>
+                                        <input type="checkbox" id={`${color.colorId}`}/>
+                                        <label htmlFor={`${color.colorId}`}>{color.name}</label>
+                                    </div>
+                                )}
                             </li>
-                            <li>
-                                <h2>Висота</h2>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='height-1'/>
-                                    <label htmlFor="height-1">60–85 mm</label>
-                                </div>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='height-2'/>
-                                    <label htmlFor="height-2">більше 85 mm</label>
-                                </div>
-                            </li>
-                            <li>
-                                <h2>Колір</h2>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='color-1'/>
-                                    <label htmlFor="color-1">Дикий дуб</label>
-                                </div>
-                                <div className="checkbox-container">
-                                    <input type="checkbox" id='color-2'/>
-                                    <label htmlFor="color-2">Слонова кістка</label>
-                                </div>
-                            </li>
-                            <button className='show-more-btn'>Показати ще 8</button>
                         </ul>
                     </div>
                 </div>
                 <div className="selected-category-items">
-                    {MenuItems.map((item, index)=>(
-                        <SingleProduct key={index}  showToCart={true}/>
+                    {filteredProducts.map(product => (
+                        <SingleProduct key={product.productId} showToCart={true} product={product}/>
                     ))}
                 </div>
-
             </div>
-
 
         </div>
     );

@@ -16,7 +16,6 @@
 .categories-items li {
     width: 49%;
     height: 350px;
-    background-image: url("../../assets/popular-categories/category-1.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

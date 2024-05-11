@@ -1,11 +1,11 @@
 import React from 'react';
-import {useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import SelectedCategory from "../components/SelectedCategory/SelectedCategory.jsx";
 const SelectedCategoryPage = () => {
-    const {category,title} = useParams();
+    const location = useLocation();
     return (
         <>
-            <SelectedCategory category={category} title={title} />
+            <SelectedCategory location={location} />
         </>
     );
 };

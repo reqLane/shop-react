@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../index.css';
 import '../Navbar/Navbar.css';
 import logo from '../../assets/images/logo.png';
@@ -6,22 +6,40 @@ import { RiSearchLine } from 'react-icons/ri';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { MenuItems } from '../../MenuItems/MenuItems.js';
 import DropdownMenu from '../DropdownMenu/DropdownMenu.jsx';
 import AuthModal from "../AuthModal/AuthModal.jsx";
 
 const Navbar = () => {
+    const [categories, setCategories] = useState([]);
     const [activeMenu, setActiveMenu] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
-    const handleMouseEnter = (index) => {
-        setActiveMenu(index);
-        setActiveSubMenu(null); // Reset active submenu when hovering over a new menu item
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/categories');
+            const data = await response.json();
+
+            // Fetch subcategories for each category
+            const categoriesWithSubcategories = await Promise.all(data.map(async category => {
+                const subcategoriesResponse = await fetch(`http://localhost:8080/api/categories/${category.categoryId}/subcategories`);
+                const subcategories = await subcategoriesResponse.json();
+                return { ...category, subMenu: subcategories };
+            }));
+
+            setCategories(categoriesWithSubcategories);
+        } catch (error) {
+            console.error('Error fetching categories and subcategories:', error);
+        }
     };
 
-    const handleSubMenuEnter = (index) => {
-        setActiveSubMenu(index);
+    const handleMouseEnter = (index) => {
+        setActiveMenu(index);
+        setActiveSubMenu(null);
     };
 
     const handleMouseLeave = () => {
@@ -30,7 +48,7 @@ const Navbar = () => {
     };
 
     const handleUserIconClick = () => {
-        setShowModal(true); // Open the modal when user icon is clicked
+        setShowModal(true);
     };
 
     return (
@@ -61,22 +79,29 @@ const Navbar = () => {
                 </div>
                 <div className='nav-links-container'>
                     <ul className='nav-items'>
-                        {MenuItems.map((item, index) => (
-                            <Link to={`${item.slug}`}
-                                key={index}
-                                onMouseEnter={() => handleMouseEnter(index)}
+                        {categories.map((category) => (
+                            <li
+                                key={category.categoryId}
+                                onMouseEnter={() => handleMouseEnter(category.categoryId)}
                                 onMouseLeave={handleMouseLeave}
                             >
-                                <span  className='nav-link'>
-                                    {item.slug}
-                                </span>
-                                <DropdownMenu items={item.subMenu} slug={item.slug} category={item.category} isOpen={activeMenu === index} />
-                            </Link>
+                                <Link
+                                    to={`/${category.name.toLowerCase()}`}
+                                    state={{category: category}}
+                                    key={category.categoryId}
+                                    className='nav-link'
+                                >
+                                    {category.name}
+                                </Link>
+                                {activeMenu === category.categoryId && (
+                                    <DropdownMenu category={category} isOpen={() => handleMouseEnter} />
+                                )}
+                            </li>
                         ))}
                     </ul>
                 </div>
             </nav>
-            {showModal && <AuthModal onClose={()=> setShowModal(false)}/>}
+            {showModal && <AuthModal onClose={() => setShowModal(false)} />}
         </>
     );
 };

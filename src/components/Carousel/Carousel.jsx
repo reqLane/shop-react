@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
-import 'swiper/swiper-bundle.css'; // Import Swiper CSS after adding SwiperCore styles
-import banner1 from "../../assets/slider-images/banner-1.png";
-import banner2 from "../../assets/slider-images/banner-2.png";
-import banner3 from "../../assets/slider-images/banner-3.png";
+import 'swiper/swiper-bundle.css';
+import banner1 from "../../assets/slider-images/img1.jpeg";
+import banner2 from "../../assets/slider-images/img2.avif";
+import banner3 from "../../assets/slider-images/img3.avif";
 import banner4 from "../../assets/slider-images/banner-4.png";
 import banner5 from "../../assets/slider-images/banner-5.png";
 import {Autoplay, Navigation} from "swiper/modules";
 import '../Carousel/Carousel.css';
 
-SwiperCore.use([Navigation, Autoplay]); // Enable Swiper navigation and autoplay
+SwiperCore.use([Navigation, Autoplay]);
 
 const Carousel = () => {
     const [activeSlide, setActiveSlide] = useState(0);
