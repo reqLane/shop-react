@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import './Cart.css';
 import productImage from '../../assets/images/logo.png';
 import PopularProducts from "../PopularProducts/PopularProducts.jsx";
-import {Link} from "react-router-dom"; // Import your product image
+import {Link} from "react-router-dom";
+import popularProducts from "../PopularProducts/PopularProducts.jsx"; // Import your product image
 
-const Cart = () => {
+const Cart = ({popularProducts}) => {
     // State for product details
     const [products, setProducts] = useState([
         { id: 1, name: 'Product 1', color: 'Red', material: 'Wood', quantity: 1, price: 100 },
@@ -29,19 +30,18 @@ const Cart = () => {
     return (
         <div className='cart-container'>
             <div className="cart-path">
-                <span>Головна Кошик</span>
+                <span>Home Cart</span>
             </div>
-            <h1 className='cart-title'>Кошик</h1>
+            <h1 className='cart-title'>Cart</h1>
             <div className="table-container">
                 <table className="cart-table">
                     <thead>
                     <tr>
-                        <th>Назва товару</th>
-                        <th>Колір</th>
-                        <th>Матеріал</th>
-                        <th>Кількість</th>
-                        <th>Ціна</th>
-
+                        <th>Product Name</th>
+                        <th>Color</th>
+                        <th>Material</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -79,10 +79,10 @@ const Cart = () => {
                         <p>Всього у кошику 3 товари на суму</p>
                         <span>6670 грн</span>
                     </div>
-                    <Link to='/order' className='make-order-btn'>Оформити замовлення</Link>
+                    <Link to='/order' className='make-order-btn'>Proceed With Order</Link>
                 </div>
             </div>
-            <PopularProducts/>
+            <PopularProducts popularProducts={popularProducts}/>
         </div>
     );
 };

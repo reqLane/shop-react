@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import '../../index.css';
 import '../Navbar/Navbar.css';
 import logo from '../../assets/images/logo.png';
@@ -14,6 +15,8 @@ const Navbar = () => {
     const [activeMenu, setActiveMenu] = useState(null);
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [showModal, setShowModal] = useState(false);
+
+    const cartItems = useSelector(state => state.cart.items);
 
     useEffect(() => {
         fetchCategories();
@@ -51,6 +54,14 @@ const Navbar = () => {
         setShowModal(true);
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            const searchRequest = event.target.value;
+
+            if(searchRequest !== '') location.href = `/search?s=${searchRequest}`;
+        }
+    };
+
     return (
         <>
             <nav className='nav-container'>
@@ -64,16 +75,17 @@ const Navbar = () => {
                     </div>
 
                     <div className='search-container'>
-                        <input className='nav-search-bar' type='text' placeholder='Пошук Меблів' />
+                        <input className='nav-search-bar' type='text' placeholder='Search Furniture' onKeyPress={handleKeyPress}  />
                         <RiSearchLine className='search-icon' />
                     </div>
 
                     <div className='nav-auth-container'>
                         <button className='user-icon-link' onClick={handleUserIconClick}>
-                            <FaUser className='user-icon' /> Увійти
+                            <FaUser className='user-icon' /> Sign In
                         </button>
                         <Link to='/cart' className='cart-icon-link'>
                             <AiOutlineShoppingCart className='shopping-cart-icon' />
+                            <span className="cart-item-count">{cartItems.length}</span>
                         </Link>
                     </div>
                 </div>

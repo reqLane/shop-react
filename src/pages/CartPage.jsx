@@ -1,10 +1,10 @@
 import React from 'react';
 import Cart from "../components/Cart/Cart.jsx";
 
-const CartPage = () => {
+const CartPage = ({popularProducts}) => {
     return (
         <>
-            <Cart/>
+            <Cart popularProducts={popularProducts}/>
         </>
     );
 };

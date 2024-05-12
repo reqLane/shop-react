@@ -2,6 +2,10 @@ import React, {useEffect, useState} from 'react';
 import Slider from 'react-slider'
 import './SelectedCategory.css';
 import SingleProduct from "../SingleProduct/SingleProduct.jsx";
+import Spinner from "../Spinner/Spinner.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {addToCart, removeFromCart, selectCartItems} from "../../cartSlice.jsx";
+import {useParams} from "react-router-dom";
 const SelectedCategory = ({location}) => {
     const [edgePrices, setEdgePrices] = useState([0,0]);
     const [sliderValues,setSliderValues] = useState([0,0]);
@@ -10,11 +14,24 @@ const SelectedCategory = ({location}) => {
     const [colors, setColors] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [selectOption,setSelectOption] = useState('asc');
+    const [loading,setLoading] = useState(true);
 
-    const category = location.state.category;
-    const subcategory = location.state.subcategory;
-    const search = location.state.search;
+    const searchParams = new URLSearchParams(location.search);
+    const search = searchParams.get('s');
 
+    const category = location.state ? location.state.category : null;
+    const subcategory = location.state ? location.state.subcategory : null;
+
+    const dispatch = useDispatch();
+    const cartItems = useSelector(selectCartItems);
+
+    const handleAddToCart = (product) => {
+        dispatch(addToCart(product));
+    };
+
+    const handleRemoveFromCart = (product) => {
+        dispatch(removeFromCart(product.productId));
+    };
 
     useEffect(()=>{
         getEdgePrices().then((data) => {
@@ -26,15 +43,16 @@ const SelectedCategory = ({location}) => {
             setSelectedSliderValues([priceLow,priceHigh]);
 
             getFilteredProducts(priceLow,priceHigh);
+            setLoading(false);
         });
+
         getMaterials();
         getColors();
     },[location]);
 
     useEffect(()=>{
         getFilteredProducts(selectedSliderValues[0], selectedSliderValues[1]);
-    },[selectOption,selectedSliderValues]);
-
+    },[selectOption]);
 
     const getEdgePrices = async () => {
         const body = {
@@ -67,7 +85,7 @@ const SelectedCategory = ({location}) => {
 
     const getMaterialsChecked = () => {
         const checkedMaterials = materials.filter(material => {
-            const checkbox = document.getElementById(material.materialId.toString());
+            const checkbox = document.getElementById(material.name);
             return checkbox.checked;
         });
         const materialIds = checkedMaterials.map(material => material.materialId);
@@ -76,7 +94,7 @@ const SelectedCategory = ({location}) => {
 
     const getColorsChecked = () => {
         const checkedColors = colors.filter(color => {
-            const checkbox = document.getElementById(color.colorId.toString());
+            const checkbox = document.getElementById(color.name);
             return checkbox.checked;
         });
         const colorIds = checkedColors.map(color => color.colorId);
@@ -114,14 +132,18 @@ const SelectedCategory = ({location}) => {
         setSelectOption(select === 'Highest Price' ? 'desc' : 'asc');
     }
 
+    const submitFilters = () => {
+        setSelectedSliderValues(sliderValues);
+        getFilteredProducts(sliderValues[0], sliderValues[1]);
+    }
+
     return (
         <div className='selected-category-container'>
             <div className="category-path">
                 {subcategory ?
-                    <h1>Home <span>{category.name} {subcategory.name}</span></h1>
+                    <h1>Home &#8594; <span>{category.name} &#8594; {subcategory.name}</span></h1>
                     :
-                    (category ? <h1>Home <span>{category.name}</span></h1> : <h1>Home <span>${search}</span></h1>)
-
+                    (category ? <h1>Home &#8594; <span>{category.name}</span></h1> : <h1>Home &#8594; <span>{search}</span></h1>)
                 }
             </div>
 
@@ -129,7 +151,7 @@ const SelectedCategory = ({location}) => {
                 {subcategory ?
                     <h2 className='category-title'>{subcategory.name}</h2>
                     :
-                    (category && <h2 className='category-title'>{category.name}</h2>)
+                    <h2 className='category-title'>{category && category.name}</h2>
                 }
 
                 <div className="category-overall-filter">
@@ -151,7 +173,7 @@ const SelectedCategory = ({location}) => {
                             <div className="values">
                                 <div className="value-from"> {sliderValues[0]}</div>
                                 <div className="value-to">{sliderValues[1]}</div>
-                                <div className='confirm-btn'>OK</div>
+                                <div className='confirm-btn' onClick={submitFilters}>OK</div>
                             </div>
                         </div>
                         <ul className='category-filter-list'>
@@ -159,8 +181,8 @@ const SelectedCategory = ({location}) => {
                                 <h2>Material</h2>
                                 {materials.map(material=>
                                     <div className="checkbox-container" key={`${material.materialId}`}>
-                                        <input type="checkbox" id={`${material.materialId}`}/>
-                                        <label htmlFor={`${material.materialId}`}>{material.name}</label>
+                                        <input type="checkbox" id={`${material.name}`}/>
+                                        <label htmlFor={`${material.name}`}>{material.name}</label>
                                     </div>
                                 )}
                             </li>
@@ -168,19 +190,28 @@ const SelectedCategory = ({location}) => {
                                 <h2>Color</h2>
                                 {colors.map(color=>
                                     <div className="checkbox-container" key={`${color.colorId}`}>
-                                        <input type="checkbox" id={`${color.colorId}`}/>
-                                        <label htmlFor={`${color.colorId}`}>{color.name}</label>
+                                        <input type="checkbox" id={`${color.name}`}/>
+                                        <label htmlFor={`${color.name}`}>{color.name}</label>
                                     </div>
                                 )}
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div className="selected-category-items">
-                    {filteredProducts.map(product => (
-                        <SingleProduct key={product.productId} showToCart={true} product={product}/>
-                    ))}
-                </div>
+                {loading ? (<Spinner/>) : (
+                    <div className="selected-category-items">
+                        {filteredProducts.map(product => (
+                            <SingleProduct
+                                key={product.productId}
+                                showToCart={true}
+                                product={product}
+                                addToCart={handleAddToCart}
+                                removeFromCart={handleRemoveFromCart}
+                                cartItems={cartItems}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
         </div>
