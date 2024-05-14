@@ -1,3 +1,6 @@
 .popular-products-container{
     display: flex;
 }
+.popular-products-title{
+    color: #03132c;
+}

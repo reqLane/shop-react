@@ -14,6 +14,8 @@ const SelectedProduct = ({location}) => {
     const [productRecommendations, setProductRecommendations] = useState([]);
     const [addedToCart,setAddedToCart] = useState(false);
     const [colorChoice, setColorChoice] = useState(null);
+    const [colorChoiceName,setColorChoiceName] = useState(null);
+    const [materialChoice, setMaterialChoice] = useState(null);
 
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
@@ -27,7 +29,6 @@ const SelectedProduct = ({location}) => {
         getRecommendations();
         checkCartItems();
     }, [location,cartItems]);
-
 
     const checkCartItems = () => {
         const found = cartItems.find(item => item.productId === product.productId);
@@ -48,6 +49,7 @@ const SelectedProduct = ({location}) => {
         try {
             const response = await fetch(`http://localhost:8080/api/products/${product.productId}/pictures`);
             const data = await response.json();
+            console.log("all pictures:", data)
 
             const base64Images = data.map(byteArray => {
                 return { original: `data:image/jpeg;base64,${byteArray}` };
@@ -66,6 +68,7 @@ const SelectedProduct = ({location}) => {
             const data = await response.json();
             setSelectColors(data);
             setColorChoice(data[0].hexCode);
+            setColorChoiceName(data[0].name);
         }catch (error){
             console.error('Error fetching select colors:', error);
         }
@@ -76,6 +79,7 @@ const SelectedProduct = ({location}) => {
             const response = await fetch(`http://localhost:8080/api/products/${product.productId}/materials`);
             const data = await response.json();
             setSelectMaterials(data);
+            setMaterialChoice(data[0].name);
         }catch (error){
             console.error('Error fetching select materials:', error);
         }
@@ -83,7 +87,7 @@ const SelectedProduct = ({location}) => {
 
     const getRecommendations = async () =>{
         try{
-            const response = await fetch(`http://localhost:8080/api/products/${product.productId}/recommendations`);
+            const response = await fetch(`http://localhost:8080/api/products/${product.productId}/recommendations?size=5`);
             const data = await response.json();
             setProductRecommendations(data);
         }catch (error){
@@ -93,13 +97,29 @@ const SelectedProduct = ({location}) => {
 
     const handleColorChange = (event) => {
         setColorChoice(event.target.value);
+        const selectedColor = selectColors.find(color => color.hexCode === event.target.value);
+        setColorChoiceName(selectedColor ? selectedColor.name : null);
     };
     const handleAddToCart = () => {
+        const selectedColor = colorChoiceName ? colorChoiceName : selectColors[0].name;
+        const selectedMaterial = materialChoice ? materialChoice : selectMaterials[0].materialId;
+
+        const productToAdd = {
+            ...product,
+            color: selectedColor,
+            material: selectedMaterial,
+            quantity:quantity
+        };
+
         if (addedToCart) {
             dispatch(removeFromCart(product.productId));
         } else {
-            dispatch(addToCart(product));
+            dispatch(addToCart(productToAdd));
         }
+    };
+
+    const handleMaterialChange = (event) => {
+        setMaterialChoice(event.target.value);
     };
 
     return (
@@ -154,6 +174,7 @@ const SelectedProduct = ({location}) => {
                                 name=""
                                 id=""
                                 className='select-material'
+                                onChange={handleMaterialChange}
                             >
                                 {selectMaterials.map(material => (
                                     <option key={material.materialId}>
@@ -186,6 +207,10 @@ const SelectedProduct = ({location}) => {
                 <h2>Characteristics</h2>
                 <ul className='characteristics-container'>
                     <li>
+                        <span>Weight</span>
+                        <p>{product.weight}kg</p>
+                    </li>
+                    <li>
                         <span>Package</span>
                         <p>{product.packageDescription}</p>
                     </li>
@@ -193,7 +218,7 @@ const SelectedProduct = ({location}) => {
                 </ul>
             </div>
 
-            <PopularProducts popularProducts={productRecommendations} />
+            <PopularProducts popularProducts={productRecommendations} title={'You Might Also Like'} />
         </div>
     );
 };

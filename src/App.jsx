@@ -18,7 +18,7 @@ const App = () => {
 
     const getAllPopularProducts = async () => {
         try {
-            const response = await fetch("http://localhost:8080/api/products/trending?size=6");
+            const response = await fetch("http://localhost:8080/api/products/trending?size=5");
             const data = await response.json();
             setPopularProducts(data);
         } catch (error) {

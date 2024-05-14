@@ -134,3 +134,7 @@
     font-size: 19px;
     font-weight: 700;
 }
+
+.error-message{
+    color: #e03737;
+}

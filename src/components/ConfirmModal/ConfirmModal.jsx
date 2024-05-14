@@ -4,10 +4,10 @@ const ConfirmModal = ({onClose}) => {
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <h2 className='modal-confirm-title'>Дякуємо, що вибрали нас!</h2>
-                <p>Ваше замовлення №3265897 успішно оформлене.</p>
-                <p>Чекайте на дзвінок від нашого фахівця.</p>
-                <button className='continue-btn' onClick={onClose}>Продовжити покупки</button>
+                <h2 className='modal-confirm-title'>Thank you for choosing us!</h2>
+                <p>Your order #3265897 has been successfully processed.</p>
+                <p>Wait for a call from our specialist.</p>
+                <button className='continue-btn' onClick={onClose}>Continue shopping</button>
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ import Spinner from "../Spinner/Spinner.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {addToCart, removeFromCart, selectCartItems} from "../../cartSlice.jsx";
 import {useParams} from "react-router-dom";
+
 const SelectedCategory = ({location}) => {
     const [edgePrices, setEdgePrices] = useState([0,0]);
     const [sliderValues,setSliderValues] = useState([0,0]);

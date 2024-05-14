@@ -25,10 +25,16 @@
     border-collapse: collapse;
 }
 
+.image-column{
+    display: flex;
+    align-items: center;
+}
+
 .cart-table th, .cart-table td {
     padding: 10px;
     border: 1px solid #ddd;
 }
+
 
 .cart-table th {
     background-color: #f2f2f2;
@@ -57,6 +63,14 @@
     background-color: #ddd;
 }
 
+.empty-cart-message{
+    font-weight: 700;
+    color: #03132c;
+    font-size: 25px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 .cart-total-container{
     display: flex;
     justify-content: space-between;

@@ -1,85 +1,109 @@
 import React, {useState} from 'react';
 import './Order.css';
 import ProductInCart from "../ProductInCart/ProductInCart.jsx";
-import inCartImg from '../../assets/inCart/inCart.png';
 import ConfirmModal from "../ConfirmModal/ConfirmModal.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {selectCartItems} from "../../cartSlice.jsx";
 const Order = () => {
-    const products = [
-        { name: 'Product 1', price: 100,color: 'red', material: 'Apparel biaggi 051', image: inCartImg },
-        { name: 'Product 1', price: 100,color: 'red', material: 'Apparel biaggi 058',image: inCartImg},
-    ];
+    const cartItems = useSelector(selectCartItems);
 
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [email, setEmail] = useState('');
+    const [deliveryMethod, setDeliveryMethod] = useState('');
+    const [paymentMethod, setPaymentMethod] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState('');
 
     const handlePlaceOrder = () => {
-        setShowModal(true);
+        const isValid = validateForm();
+        if (isValid) {
+            setShowModal(true);
+            resetInputValues();
+            setTimeout(()=>{
+                window.location.href = `/`;
+            },3000);
+
+        } else {
+            setError('Please fill out all required fields and select delivery and payment methods.');
+        }
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
+    const resetInputValues = () =>{
+        setName('');
+        setPhone('');
+        setEmail('');
+        setDeliveryMethod('');
+        setPaymentMethod('');
+        setError('');
+    }
+
+    const validateForm = () => {
+        return name.trim() !== '' && phone.trim() !== '' && email.trim() !== '' && deliveryMethod !== '' && paymentMethod !== '';
     };
 
     return (
         <div className="order-page-container">
             <div className="contact-details">
-                <h1 className='order-title'>Оформлення замовлення</h1>
+                <h1 className='order-title'>Placing an order</h1>
+                {error && <p className="error-message">{error}</p>}
                 <div className="order-subtitle">
-                    <p>Будь ласка, заповніть форму.</p>
-                    <p>Оберіть спосіб оплати та спосіб доставки</p>
+                    <p>Please fill out the form.</p>
+                    <p>Choose a payment method and a delivery method</p>
                 </div>
 
                 <div className="contact-details-container">
-                    <h2 className='contact-details-title'>Контактні дані</h2>
+                    <h2 className='contact-details-title'>Contacts</h2>
                     <div className="single-contact">
-                        <label htmlFor="">Ім’я одержувача</label>
-                        <input type="text" placeholder='Ім’я одержувача'/>
+                        <label htmlFor="name">Recipient's name</label>
+                        <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder='Recepient name' />
                     </div>
                     <div className="single-contact">
-                        <label htmlFor="">Телефон*</label>
-                        <input type="text" placeholder='+380'/>
+                        <label htmlFor="phone">Phone*</label>
+                        <input type="text" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder='Phone Number' />
                     </div>
                     <div className="single-contact">
-                        <label htmlFor="">E-mail</label>
-                        <input type="text" placeholder='E-mail'/>
+                        <label htmlFor="email">E-mail</label>
+                        <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder='abc123@gmail.com' />
                     </div>
                 </div>
                 <div className="contact-details-container">
-                    <h2 className='contact-details-title'>Доставка та оплата</h2>
+                    <h2 className='contact-details-title'>Delivery and payment</h2>
                     <ul className='delivery-container'>
                         <li>
-                            <span>Спосіб доставки</span>
+                            <span>Method of delivery</span>
                             <div>
-                                <input type="radio" id='to-home'/>
-                                <label htmlFor="to-home">Кур’єром додому</label>
+                                <input type="radio" id='to-home' name="deliveryMethod" value="Courier" onChange={(e) => setDeliveryMethod(e.target.value)} />
+                                <label htmlFor="to-home">Courier</label>
                             </div>
-                           <div>
-                               <input type="radio" id='pickup'/>
-                               <label htmlFor="pickup">Самовивіз</label>
-                           </div>
+                            <div>
+                                <input type="radio" id='pickup' name="deliveryMethod" value="Pickup" onChange={(e) => setDeliveryMethod(e.target.value)} />
+                                <label htmlFor="pickup">Pickup</label>
+                            </div>
                         </li>
                         <li>
-                            <span>Спосіб розрахунку</span>
+                            <span>Payment method</span>
                             <div>
-                                <input type="radio" id='card'/>
-                                <label htmlFor="card">Банківською карткою онлайн</label>
+                                <input type="radio" id='card' name="paymentMethod" value="By bank card online" onChange={(e) => setPaymentMethod(e.target.value)} />
+                                <label htmlFor="card">By bank card online</label>
                             </div>
                             <div>
-                                <input type="radio" id='cash'/>
-                                <label htmlFor="cash">Готівкою або карткою при отриманні</label>
+                                <input type="radio" id='cash' name="paymentMethod" value="Cash or card upon receipt" onChange={(e) => setPaymentMethod(e.target.value)} />
+                                <label htmlFor="cash">Cash or card upon receipt</label>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div className='address-container'>
-                    <label htmlFor="address">Адреса</label>
-                    <input type="text" placeholder='Місто, вулиця, будинок, квартира' id='address'/>
+                    <label htmlFor="address">Address</label>
+                    <input type="text" placeholder='City, street, house, apartment' id='address' />
                 </div>
-                <p className='compulsory'>*Поля, обяв’язкові до заповнення</p>
+                <p className='compulsory'>*Mandatory fields</p>
             </div>
             <div className="order-summary">
-                <h2 className='in-cart-title'>Товари у кошику</h2>
+                <h2 className='in-cart-title'>Products in the cart</h2>
                 <ul>
-                    {products.map((product, index) => (
+                    {cartItems.map((product, index) => (
                         <li key={index} className='product-item'>
                             <ProductInCart product={product} />
                         </li>
@@ -87,12 +111,12 @@ const Order = () => {
                 </ul>
 
                 <div className='order-sum'>
-                    <p> Сума замовлення:</p>
-                    <span>{products.reduce((total, product) => total + product.price, 0)} грн</span>
+                    <p>Order amount:</p>
+                    <span>{cartItems.reduce((total, product) => total + product.price, 0)}</span>
                 </div>
 
-                <button className="place-order-btn" onClick={handlePlaceOrder}>Підтвердити замовлення</button>
-                {showModal && <ConfirmModal onClose={handleCloseModal} />}
+                <button className="place-order-btn" onClick={handlePlaceOrder}>Confirm the order</button>
+                {showModal && <ConfirmModal onClose={() => setShowModal(false)} />}
             </div>
         </div>
     );

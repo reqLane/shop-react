@@ -3,7 +3,6 @@ import '../SingleProduct/SingleProduct.css'
 import {Link} from 'react-router-dom';
 
 const SingleProduct = ({product,showToCart}) => {
-
     return (
         <div className='single-product'>
             <Link

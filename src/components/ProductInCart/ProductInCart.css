@@ -40,6 +40,12 @@
 .top-order-detail{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 600px;
 }
 
+.product-quantity-price{
+    color: #03132c;
+    font-weight: 500;
+    font-size: 15px;
+}
