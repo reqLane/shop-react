@@ -1,7 +1,7 @@
 import React from 'react';
 const ChangePasswordContent = () => {
 
-    const onPasswordChangeSubmit = async () => {
+    const handlePasswordChangeSubmit = async () => {
         const currentPasswordField = document.getElementById('current-password');
         const newPasswordField = document.getElementById('new-password');
         const newPasswordConfirmField = document.getElementById('new-password-confirm');
@@ -53,7 +53,7 @@ const ChangePasswordContent = () => {
                     <input type="password" placeholder="Re-enter new password" id='new-password-confirm' />
                 </div>
             </div>
-            <button type="submit" className='selected-profile-submit-btn' onClick={onPasswordChangeSubmit}>Save changes</button>
+            <button type="submit" className='selected-profile-submit-btn' onClick={handlePasswordChangeSubmit}>Save changes</button>
         </div>
     );
 };

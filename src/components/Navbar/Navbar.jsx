@@ -73,6 +73,7 @@ const Navbar = () => {
             setShowModal(true);
         }
     }
+
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             const searchRequest = event.target.value;
@@ -89,8 +90,8 @@ const Navbar = () => {
                         <img src={logo} width='124' alt='LORI' />
                     </Link>
                     <div className='nav-tel-container'>
-                        <a href='#'>(093) 170-78-81</a>
-                        <a href='#'>(093) 170-83-23</a>
+                        <a>(093) 170-78-81</a>
+                        <a>(093) 170-83-23</a>
                     </div>
 
                     <div className='search-container'>

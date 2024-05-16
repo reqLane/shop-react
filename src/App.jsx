@@ -36,6 +36,7 @@ const App = () => {
             });
             if (response.status === 403) {
                 localStorage.removeItem('loggedInUser');
+                localStorage.removeItem('cartItems');
                 window.location.href = '/';
             }
         } catch (error) {

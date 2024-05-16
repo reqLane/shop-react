@@ -10,47 +10,47 @@ const Footer = () => {
                         <img src={logo} alt=""/>
                     </div>
                     <div className="footer-sub-category">
-                        <p>Фабрика «React Ecommerce Website» – український виробник, eвропейська якість!</p>
+                        <p>«React Shop» – Ukrainian manufacturer, European quality!</p>
                     </div>
                 </li>
                 <li>
                     <div className="footer-top-category">
-                        <h2>Інформація</h2>
+                        <h2>Information</h2>
                     </div>
                     <div className="footer-sub-category">
-                        <p>Про нас</p>
-                        <p>Партнерам</p>
-                        <p>Вакансії</p>
+                        <p>About us</p>
+                        <p>Partnership</p>
+                        <p>Vacancies</p>
                     </div>
                 </li>
                 <li>
                     <div className="footer-top-category">
-                        <h2>Покупцям</h2>
+                        <h2>For clients</h2>
                     </div>
                     <div className="footer-sub-category">
-                        <p>Гарантія</p>
-                        <p>Оплата та доставка</p>
-                        <p>Обмін та повернення</p>
-                        <p>Кредит та оплата частинами</p>
+                        <p>Warranty</p>
+                        <p>Payment & delivery</p>
+                        <p>Exchange & return</p>
+                        <p>Credit and payment in installments</p>
                     </div>
                 </li>
                 <li>
                     <div className="footer-top-category">
-                        <h2>Контакти</h2>
+                        <h2>Contacts</h2>
                     </div>
                     <div className="footer-sub-category">
-                        <p>м. Київ,</p>
-                        <p>вул. Кривоноса, 26</p>
-                        <p>react-project@.com.ua</p>
+                        <p>Kyiv, Ukraine</p>
+                        <p>St. Kryvonosa, 26</p>
+                        <p>react-project@react.com.ua</p>
                     </div>
                 </li>
                 <li>
                     <div className="footer-top-category">
-                        <h2>Підписка на розсилку</h2>
+                        <h2>Subscribe</h2>
                     </div>
                     <div className="footer-sub-category">
                         <input type="text" placeholder='E-mail'/>
-                        <p className='footer-follow-us'>Стежте за нами</p>
+                        <p className='footer-follow-us'>Follow us</p>
                     </div>
                 </li>
             </ul>

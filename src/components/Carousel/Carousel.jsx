@@ -5,8 +5,8 @@ import 'swiper/swiper-bundle.css';
 import banner1 from "../../assets/slider-images/img1.jpeg";
 import banner2 from "../../assets/slider-images/img2.avif";
 import banner3 from "../../assets/slider-images/img3.avif";
-import banner4 from "../../assets/slider-images/banner-4.png";
-import banner5 from "../../assets/slider-images/banner-5.png";
+import banner4 from "../../assets/slider-images/img4.jpg";
+import banner5 from "../../assets/slider-images/img5.jpg";
 import {Autoplay, Navigation} from "swiper/modules";
 import '../Carousel/Carousel.css';
 
