@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import '../../index.css';
 import '../Navbar/Navbar.css';
 import logo from '../../assets/images/logo.png';
@@ -9,6 +9,7 @@ import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import DropdownMenu from '../DropdownMenu/DropdownMenu.jsx';
 import AuthModal from "../AuthModal/AuthModal.jsx";
+import {setUser} from "../../authSlice.js";
 
 const Navbar = () => {
     const [categories, setCategories] = useState([]);
@@ -16,18 +17,24 @@ const Navbar = () => {
     const [activeSubMenu, setActiveSubMenu] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
+    const dispatch = useDispatch();
     const cartItems = useSelector(state => state.cart.items);
+    const user = useSelector(state => state.auth.user);
 
     useEffect(() => {
         fetchCategories();
-    }, []);
+
+        const storedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (storedUser) {
+            dispatch(setUser(storedUser));
+        }
+    }, [dispatch]);
 
     const fetchCategories = async () => {
         try {
             const response = await fetch('http://localhost:8080/api/categories');
             const data = await response.json();
 
-            // Fetch subcategories for each category
             const categoriesWithSubcategories = await Promise.all(data.map(async category => {
                 const subcategoriesResponse = await fetch(`http://localhost:8080/api/categories/${category.categoryId}/subcategories`);
                 const subcategories = await subcategoriesResponse.json();
@@ -51,9 +58,21 @@ const Navbar = () => {
     };
 
     const handleUserIconClick = () => {
-        setShowModal(true);
+        if(user){
+            window.location.href = '/profile';
+        }else{
+            setShowModal(true);
+        }
     };
 
+    const handleCartClick = (e) =>{
+        e.preventDefault();
+        if(user){
+            window.location.href = '/cart';
+        }else{
+            setShowModal(true);
+        }
+    }
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             const searchRequest = event.target.value;
@@ -80,11 +99,20 @@ const Navbar = () => {
                     </div>
 
                     <div className='nav-auth-container'>
-                        <button className='user-icon-link' onClick={handleUserIconClick}>
-                            <FaUser className='user-icon' /> Sign In
-                        </button>
+                        {user ? (
+                            <button className='user-icon-link'>
+                                <FaUser className='user-icon' />
+                                <span className='user-name' onClick={handleUserIconClick}>{user.name}</span>
+                            </button>
+
+                        ) : (
+                            <button className='user-icon-link' onClick={handleUserIconClick}>
+                                <FaUser className='user-icon' /> Sign In
+                            </button>
+                        )}
+
                         <Link to='/cart' className='cart-icon-link'>
-                            <AiOutlineShoppingCart className='shopping-cart-icon' />
+                            <AiOutlineShoppingCart className='shopping-cart-icon' onClick={(e)=> handleCartClick(e)} />
                             <span className="cart-item-count">{cartItems.length}</span>
                         </Link>
                     </div>

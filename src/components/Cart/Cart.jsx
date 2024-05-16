@@ -21,7 +21,7 @@ const Cart = ({popularProducts}) => {
         cartItems.forEach(item => {
             total += item.price * item.quantity;
         });
-        setTotalPrice(total);
+        setTotalPrice(total.toFixed(2));
     };
 
     const handleDeleteProduct = (id) => {
@@ -50,21 +50,21 @@ const Cart = ({popularProducts}) => {
                         </thead>
                         <tbody>
                         {cartItems.map((product) => (
-                            <tr key={product.id}>
+                            <tr key={product.productId}>
                                 <td className='image-column'>
                                     <img src={`http://localhost:8080/api/products/${product.productId}/picture-main`} alt=""/>
                                     {product.name}
                                 </td>
                                 <td>
-                                    {product.color}
+                                    {product.color.name}
                                 </td>
                                 <td>
-                                    {product.material}
+                                    {product.material.name}
                                 </td>
                                 <td>
                                     {product.quantity}
                                 </td>
-                                <td>{product.price}</td>
+                                <td>{product.price}&#8372;</td>
                                 <td><button onClick={() => handleDeleteProduct(product.productId)}>X</button></td>
                             </tr>
                         ))}
@@ -72,8 +72,8 @@ const Cart = ({popularProducts}) => {
                     </table>
                     <div className="cart-total-container">
                         <div>
-                            <p>Price: </p>
-                            <span>{totalPrice}</span>
+                            <p>Total Price: </p>
+                            <span>{totalPrice}&#8372;</span>
                         </div>
                         <Link to='/order' className='make-order-btn'>Proceed With Order</Link>
                     </div>

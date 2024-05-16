@@ -9,17 +9,17 @@ const ProductInCart = ({ product }) => {
                     <p className="product-title">{product.name}</p>
                     <div>
                         {product.quantity === 1 ? (
-                            <p className="product-price">{product.price}</p>
+                            <p className="product-price">{product.price}&#8372;</p>
                         ) : (
                             <div>
-                                <p className="product-price">{product.price}</p>
+                                <p className="product-price">{(product.price * product.quantity).toFixed(2)}&#8372;</p>
                                 <p className='product-quantity-price'>{product.quantity} * {product.price}</p>
                             </div>
                         )}
                     </div>
                 </div>
-                <p className="product-info product-color">Color: {product.color}</p>
-                <p className="product-info product-material">Material: {product.material}</p>
+                <p className="product-info product-color">Color: {product.color.name}</p>
+                <p className="product-info product-material">Material: {product.material.name}</p>
             </div>
         </div>
     );

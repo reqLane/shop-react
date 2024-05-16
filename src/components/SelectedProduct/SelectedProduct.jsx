@@ -5,6 +5,8 @@ import './SelectedProduct.css';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import PopularProducts from "../PopularProducts/PopularProducts.jsx";
+import {setUser} from "../../authSlice.js";
+import AuthModal from "../AuthModal/AuthModal.jsx";
 
 const SelectedProduct = ({location}) => {
     const [quantity, setQuantity] = useState(1);
@@ -14,11 +16,13 @@ const SelectedProduct = ({location}) => {
     const [productRecommendations, setProductRecommendations] = useState([]);
     const [addedToCart,setAddedToCart] = useState(false);
     const [colorChoice, setColorChoice] = useState(null);
-    const [colorChoiceName,setColorChoiceName] = useState(null);
     const [materialChoice, setMaterialChoice] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch();
+
     const cartItems = useSelector(selectCartItems);
+    const user = useSelector((state) => state.auth.user);
 
     const product = location.state.product;
 
@@ -29,6 +33,15 @@ const SelectedProduct = ({location}) => {
         getRecommendations();
         checkCartItems();
     }, [location,cartItems]);
+
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (user) {
+            dispatch(setUser(user));
+        }
+    }, [dispatch]);
+
 
     const checkCartItems = () => {
         const found = cartItems.find(item => item.productId === product.productId);
@@ -49,7 +62,6 @@ const SelectedProduct = ({location}) => {
         try {
             const response = await fetch(`http://localhost:8080/api/products/${product.productId}/pictures`);
             const data = await response.json();
-            console.log("all pictures:", data)
 
             const base64Images = data.map(byteArray => {
                 return { original: `data:image/jpeg;base64,${byteArray}` };
@@ -67,8 +79,7 @@ const SelectedProduct = ({location}) => {
             const response = await fetch(`http://localhost:8080/api/products/${product.productId}/colors`);
             const data = await response.json();
             setSelectColors(data);
-            setColorChoice(data[0].hexCode);
-            setColorChoiceName(data[0].name);
+            setColorChoice(data[0]);
         }catch (error){
             console.error('Error fetching select colors:', error);
         }
@@ -79,7 +90,7 @@ const SelectedProduct = ({location}) => {
             const response = await fetch(`http://localhost:8080/api/products/${product.productId}/materials`);
             const data = await response.json();
             setSelectMaterials(data);
-            setMaterialChoice(data[0].name);
+            setMaterialChoice(data[0]);
         }catch (error){
             console.error('Error fetching select materials:', error);
         }
@@ -96,30 +107,33 @@ const SelectedProduct = ({location}) => {
     }
 
     const handleColorChange = (event) => {
-        setColorChoice(event.target.value);
-        const selectedColor = selectColors.find(color => color.hexCode === event.target.value);
-        setColorChoiceName(selectedColor ? selectedColor.name : null);
+        setColorChoice(JSON.parse(event.target.value));
     };
     const handleAddToCart = () => {
-        const selectedColor = colorChoiceName ? colorChoiceName : selectColors[0].name;
-        const selectedMaterial = materialChoice ? materialChoice : selectMaterials[0].materialId;
+        if(user){
+            const selectedColor = colorChoice ? colorChoice : selectColors[0];
+            const selectedMaterial = materialChoice ? materialChoice : selectMaterials[0];
 
-        const productToAdd = {
-            ...product,
-            color: selectedColor,
-            material: selectedMaterial,
-            quantity:quantity
-        };
+            const productToAdd = {
+                ...product,
+                color: selectedColor,
+                material: selectedMaterial,
+                quantity:quantity
+            };
 
-        if (addedToCart) {
-            dispatch(removeFromCart(product.productId));
-        } else {
-            dispatch(addToCart(productToAdd));
+            if (addedToCart) {
+                dispatch(removeFromCart(product.productId));
+            } else {
+                dispatch(addToCart(productToAdd));
+            }
+        }else{
+            setShowModal(true);
         }
+
     };
 
     const handleMaterialChange = (event) => {
-        setMaterialChoice(event.target.value);
+        setMaterialChoice(JSON.parse(event.target.value));
     };
 
     return (
@@ -154,7 +168,7 @@ const SelectedProduct = ({location}) => {
                                 {selectColors.map(color => (
                                     <option
                                         key={color.colorId}
-                                        value={color.hexCode}
+                                        value={JSON.stringify(color)}
                                     >
                                         {color.name}
                                     </option>
@@ -163,7 +177,7 @@ const SelectedProduct = ({location}) => {
                             {colorChoice && (
                                 <div
                                     className="circle-color"
-                                    style={{ backgroundColor: `#${colorChoice}` }}
+                                    style={{ backgroundColor: `#${colorChoice ? colorChoice.hexCode : selectColors[0].hexCode}` }}
                                 />
                             )}
                         </div>
@@ -177,7 +191,7 @@ const SelectedProduct = ({location}) => {
                                 onChange={handleMaterialChange}
                             >
                                 {selectMaterials.map(material => (
-                                    <option key={material.materialId}>
+                                    <option value={JSON.stringify(material)} key={material.materialId}>
                                         {material.name}
                                     </option>
                                 ))}
@@ -192,13 +206,14 @@ const SelectedProduct = ({location}) => {
                             <span className="quantity">{quantity}</span>
                             <button className="quantity-btn" onClick={() => incrementQuantity()}>+</button>
                         </div>
-                        {addedToCart ? (
+                        { addedToCart ? (
                             <button className='add-to-cart' onClick={handleAddToCart}>Remove From Cart</button>
                         ) : (
                             <button className="add-to-cart" onClick={handleAddToCart}>
                                 Add To Cart
                             </button>
                         )}
+                        {showModal && <AuthModal onClose={() => setShowModal(false)} />}
                     </div>
                 </div>
             </div>
@@ -217,7 +232,6 @@ const SelectedProduct = ({location}) => {
 
                 </ul>
             </div>
-
             <PopularProducts popularProducts={productRecommendations} title={'You Might Also Like'} />
         </div>
     );

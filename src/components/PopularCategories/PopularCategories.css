@@ -2,7 +2,7 @@
     margin-top: 60px;
 }
 .popular-categories-title{
-    color: #000000;
+    color: #03132c;
     font-weight: 700;
     font-size: 30px;
     margin-bottom: 30px;
@@ -13,7 +13,7 @@
     flex-wrap: wrap;
     gap: 25px;
 }
-.categories-items li {
+.categories-items .category-link {
     width: 49%;
     height: 350px;
     background-repeat: no-repeat;
@@ -29,15 +29,15 @@
     width: 300px;
     padding: 160px 0 60px 30px;
 }
-.categories-items li:hover{
+.categories-items .category-link:hover{
     opacity: 0.9;
 }
-.categories-items li:hover .popular-category-text,
-.categories-items li:hover .category-description {
+.categories-items .category-link:hover .popular-category-text,
+.categories-items .category-link:hover .category-description {
     color: #03132c;
 }
 
-.categories-items li:hover .category-btn {
+.categories-items .category-link:hover .category-btn {
     background-color: #03132c;
     color: white;
 }

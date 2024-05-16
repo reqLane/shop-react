@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import './Order.css';
 import ProductInCart from "../ProductInCart/ProductInCart.jsx";
 import ConfirmModal from "../ConfirmModal/ConfirmModal.jsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {selectCartItems} from "../../cartSlice.jsx";
+
 const Order = () => {
     const cartItems = useSelector(selectCartItems);
+
+    const totalPrice = cartItems.reduce((total, product) => total + product.price * product.quantity, 0).toFixed(2);
 
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -13,21 +16,64 @@ const Order = () => {
     const [deliveryMethod, setDeliveryMethod] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [orderId, setOrderId] = useState(null);
     const [error, setError] = useState('');
 
-    const handlePlaceOrder = () => {
+    const handlePlaceOrder = async (e) => {
+        e.target.disabled = true;
+        setError('');
         const isValid = validateForm();
         if (isValid) {
-            setShowModal(true);
-            resetInputValues();
-            setTimeout(()=>{
-                window.location.href = `/`;
-            },3000);
-
+            const responseOrderId = await sendOrder();
+            setOrderId(responseOrderId);
+            if(responseOrderId) {
+                setShowModal(true);
+                resetInputValues();
+                localStorage.removeItem('cartItems');
+                setTimeout(()=>{
+                    window.location.href = `/`;
+                },5000);
+            }
         } else {
-            setError('Please fill out all required fields and select delivery and payment methods.');
+            setError('Please fill out all required fields and select delivery and payment methods');
+            e.target.disabled = false;
         }
     };
+
+    const sendOrder = async () =>{
+        try {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('loggedInUser'));
+            const orderProductsOptional = JSON.parse(localStorage.getItem('cartItems'));
+            const orderProducts = orderProductsOptional ? orderProductsOptional.map((p) => {
+                return {
+                    productId: p.productId,
+                    amount: p.quantity,
+                    colorId: p.color.colorId,
+                    materialId: p.material.materialId
+                };
+            }) : null;
+
+            const body = {
+                userId: user ? user.userId : null,
+                orderProducts: orderProducts,
+                price: totalPrice
+            };
+
+            const response = await fetch("http://localhost:8080/api/orders/create",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+            const data = await response.json();
+            return data ? data.orderId : null;
+        } catch (error) {
+            console.error('Error creating order:', error);
+        }
+    }
 
     const resetInputValues = () =>{
         setName('');
@@ -111,12 +157,12 @@ const Order = () => {
                 </ul>
 
                 <div className='order-sum'>
-                    <p>Order amount:</p>
-                    <span>{cartItems.reduce((total, product) => total + product.price, 0)}</span>
+                    <p>Order price:</p>
+                    <span>{totalPrice}&#8372;</span>
                 </div>
 
                 <button className="place-order-btn" onClick={handlePlaceOrder}>Confirm the order</button>
-                {showModal && <ConfirmModal onClose={() => setShowModal(false)} />}
+                {showModal && <ConfirmModal onClose={() => setShowModal(false)} orderId={orderId} />}
             </div>
         </div>
     );
